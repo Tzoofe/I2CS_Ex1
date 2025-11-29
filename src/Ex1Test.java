@@ -163,9 +163,6 @@ class Ex1Test {
 		assertEquals(sp, Ex1.poly(p1));
 	}
 	@Test
-	/**
-	 * Tests the equality of pairs of arrays.
-	 */
 	public void testEquals() {
 		double[][] d1 = {{0}, {1}, {1,2,0,0}};
 		double[][] d2 = {Ex1.ZERO, {1+ Ex1.EPS/2}, {1,2}};

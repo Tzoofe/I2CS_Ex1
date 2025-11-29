@@ -76,8 +76,8 @@ public class Ex1 {
                 double slope1 = (y2 - y1) / (x2 - x1); //shipua 1
                 double slope2 = (y3 - y2) / (x3 - x2); //shipua 2
                 double a2 = (slope2 - slope1) / (x3 - x1);// mekadem x^2
-                double y1New = y1 - a2 * Math.pow(x1, 2);
-                double y2New = y2 - a2 * Math.pow(x2, 2);
+                double y1New = y1 - a2 * (x1 * x1); //revised
+                double y2New = y2 - a2 * (x2 * x2); //revised
                 double a1 = (y2New - y1New) / (x2 - x1);
                 double a0 = y1New - (a1 * x1);
 
@@ -93,10 +93,22 @@ public class Ex1 {
 	 * @return true iff p1 represents the same polynomial function as p2.
 	 */
 	public static boolean equals(double[] p1, double[] p2) {
-		boolean ans = true;
-        /** add you code below
 
-         /////////////////// */
+        int maxPoints = Math.max(p1.length, p2.length);
+        //loop
+        for (int i = 0; i < maxPoints; i++) {
+            double x = i;
+            //use the f function
+            double val1 = f(p1, x);
+            double val2 = f(p2, x);
+
+            //use abs to check the paar between the two
+            //if the paar is < EPS return false
+            if (Math.abs(val1 - val2) > EPS) {
+                return false;
+            }
+        }
+        boolean ans = true;
 		return ans;
 	}
 
