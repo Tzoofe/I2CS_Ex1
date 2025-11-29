@@ -55,6 +55,8 @@ public class Ex1 {
 	 * @param yy
 	 * @return an array of doubles representing the coefficients of the polynom.
 	 */
+
+    //get two points (double)
 	public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 		double [] ans = null;
 		int lx = xx.length;
@@ -63,15 +65,23 @@ public class Ex1 {
             if(lx == 2) {
                 double x1 = xx[0], y1 = yy[0];
                 double x2 = xx[1], y2 = yy[1];
-                double m = (y2-y1) / (x2-x1);
-                double b = y1 - m*x1;
-                ans = new double[]{m, b};
+                double slope= (y2-y1) / (x2-x1); //shipua
+                double b = y1 - slope*x1; //hituh
+                ans = new double[]{b, slope};
             }
             if(lx == 3) {
-                double x1 = xx[0], y1 = yy[0];
-                double x2 = xx[1], y2 = yy[1];
-                double x3 = xx[2], y3 = yy[2];
-                double denom = (x1 - x2) * (x1 - x3) * (x2 - x3);
+                double x1 = xx[0], y1 = yy[0]; //leftest
+                double x2 = xx[1], y2 = yy[1]; //middle
+                double x3 = xx[2], y3 = yy[2]; //rightest
+                double slope1 = (y2 - y1) / (x2 - x1); //shipua 1
+                double slope2 = (y3 - y2) / (x3 - x2); //shipua 2
+                double a2 = (slope2 - slope1) / (x3 - x1);// mekadem x^2
+                double y1New = y1 - a2 * Math.pow(x1, 2);
+                double y2New = y2 - a2 * Math.pow(x2, 2);
+                double a1 = (y2New - y1New) / (x2 - x1);
+                double a0 = y1New - (a1 * x1);
+
+                return new double[] {a0, a1, a2};
             }
 		}
 		return ans;
@@ -107,7 +117,7 @@ public class Ex1 {
 		return ans;
 	}
 	/**
-	 * Given two polynomial functions (p1,p2), a range [x1,x2] and an epsilon eps. This function computes an x value (x1<=x<=x2)
+	 * Given two polynomial functions (p1,p2) - "f" "g", a range [x1,x2] and an epsilon eps. This function computes an x value (x1<=x<=x2)
 	 * for which |p1(x) -p2(x)| < eps, assuming (p1(x1)-p2(x1)) * (p1(x2)-p2(x2)) <= 0.
 	 * @param p1 - first polynomial function
 	 * @param p2 - second polynomial function

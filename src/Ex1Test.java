@@ -14,15 +14,43 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class Ex1Test {
+    public static final double EPS = 0.001;
 	static final double[] P1 ={2,0,3, -1,0}, P2 = {0.1,0,1, 0.1,3};
 	static double[] po1 = {2,2}, po2 = {-3, 0.61, 0.2};;
 	static double[] po3 = {2,1,-0.7, -0.02,0.02};
 	static double[] po4 = {-3, 0.61, 0.2};
 	
  	@Test
-	/**
-	 * Tests that f(x) == poly(x).
-	 */
+	public void testPoly() {
+
+         //as per function y = 2x +1
+         double [] x1 = {0, 1};
+         double [] y1 = {1, 3};
+         double [] res1 = Ex1.PolynomFromPoints(x1, y1);
+
+         assertNotNull(res1);
+         assertEquals(2, res1.length);
+         assertEquals(1.0, res1[0], EPS);
+         assertEquals(2.0, res1[1], EPS);
+
+         //as per function y = x^2 + 0x + 0
+        double[] x2 = {-1, 0, 1};
+        double[] y2 = {1, 0, 1};
+        double[] res2 = Ex1.PolynomFromPoints(x2, y2);
+        assertNotNull(res2);
+        assertEquals(3, res2.length);
+        assertEquals(0, res2[0], EPS);
+        assertEquals(0, res2[1], EPS);
+        assertEquals(1, res2[2], EPS);
+
+     }
+     @Test
+     public void testPolyInvalid() {
+         double [] x = {0, 1};
+         double [] y = {1}; //missing point
+         double [] res = Ex1.PolynomFromPoints(x, y);
+         assertNull(res);
+     }
 	void testF() {
 		double fx0 = Ex1.f(po1, 0);
 		double fx1 = Ex1.f(po1, 1);
