@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -84,9 +86,25 @@ class Ex1Test {
 
     }
 	@Test
-	/**
-	 * Tests that p1(x) + p2(x) == (p1+p2)(x)
-	 */
+    public void testLength() {
+         //check for linear line
+        //example function y = 5
+         double[] p1 = {5};
+         double res1 = Ex1.length(p1, 0, 10, 1); //where p1 is the poly ufnction
+        assertEquals(10.0, res1, Ex1.EPS);
+
+        //check for y=x (אלכסון)
+        double[] p2 = {0, 1}; //
+        double res2 = Ex1.length(p2, 0, 1, 100);// אלכסון רגיל
+        assertEquals(Math.sqrt(2), res2, Ex1.EPS);
+        //check for fun y = 3x+2
+        double[] p3 = {2, 3};
+        double res3 = Ex1.length(p3, 0, 3, 1);
+        assertEquals(Math.sqrt(90), res3, Ex1.EPS);
+    }
+
+
+
 
 	void testF2() {
 		double x = Math.PI;
@@ -201,15 +219,18 @@ class Ex1Test {
 	}
 
 	@Test
-	/**
-	 * Tests is the sameValue function is symmetric.
-	 */
-	public void testSameValue2() {
-		double x1=-4, x2=0;
-		double rs1 = Ex1.sameValue(po1,po2, x1, x2, Ex1.EPS);
-		double rs2 = Ex1.sameValue(po2,po1, x1, x2, Ex1.EPS);
-		assertEquals(rs1,rs2, Ex1.EPS);
-	}
+
+    public void testSameValue() {
+        double[] p1 = {-2, 3}; //first function y = 3x +2
+        double[] p2 = {4, 2}; //second y = 2x -4
+
+        double x1 = -10, x2 = 10;
+
+        double res1 = Ex1.sameValue(p1, p2, x1, x2, Ex1.EPS);
+
+        assertEquals(6, res1, Ex1.EPS);
+    }
+
 	@Test
 	/**
 	 * Test the area function - it should be symmetric.

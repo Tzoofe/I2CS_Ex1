@@ -39,14 +39,14 @@ public class Ex1 {
 	 * @param eps - epsilon (positive small value (often 10^-3, or 10^-6).
 	 * @return an x value (x1<=x<=x2) for which |p(x)| < eps.
 	 */
-	public static double root_rec(double[] p, double x1, double x2, double eps) {
-		double f1 = f(p,x1);
-		double x12 = (x1+x2)/2;
-		double f12 = f(p,x12);
-		if (Math.abs(f12)<eps) {return x12;}
-		if(f12*f1<=0) {return root_rec(p, x1, x12, eps);}
-		else {return root_rec(p, x12, x2, eps);}
-	}
+    public static double root_rec(double[] p, double x1, double x2, double eps) {
+        double f1 = f(p,x1);
+        double x12 = (x1+x2)/2;
+        double f12 = f(p,x12);
+        if (Math.abs(f12)<eps) {return x12;}
+        if(f12*f1<=0) {return root_rec(p, x1, x12, eps);}
+        else {return root_rec(p, x12, x2, eps);}
+    }
 	/**
 	 * This function computes a polynomial representation from a set of 2D points on the polynom.
 	 * The solution is based on: //	http://stackoverflow.com/questions/717762/how-to-calculate-the-vertex-of-a-parabola-given-three-points
@@ -155,11 +155,24 @@ public class Ex1 {
 	 * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
 	 */
 	public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
-		double ans = x1;
-        /** add you code below
 
-         /////////////////// */
-		return ans;
+        int len = Math.max(p1.length, p2.length);
+        double[] diff = new double[len];
+
+        for (int i = 0; i < len; i++) {
+            double v1 = 0;
+            double v2 = 0;
+
+            if (i < p1.length) {
+                v1 = p1[i];
+            }
+            if (i < p2.length) {
+                v2 = p2[i];
+            }
+            diff[i] = v1 - v2;
+        }
+        return root_rec(diff, x1, x2, eps);
+
 	}
 	/**
 	 * Given a polynomial function (p), a range [x1,x2] and an integer with the number (n) of sample points.
@@ -174,11 +187,24 @@ public class Ex1 {
 	 * @return the length approximation of the function between f(x1) and f(x2).
 	 */
 	public static double length(double[] p, double x1, double x2, int numberOfSegments) {
-		double ans = x1;
-        /** add you code below
+        double dt = (x2 -x1) / numberOfSegments;
+        double sum = 0;
+        double xCurrent = x1;
+        double yCurrent = f(p, x1);
 
-         /////////////////// */
-		return ans;
+        //loop as per the numbers of segments
+        for (int i = 0; i < numberOfSegments; i++) {
+            double xNext = xCurrent + dt;
+            double yNext = f(p, xNext);
+            double pow1 = Math.pow((xNext - xCurrent), 2);
+            double pow2 = Math.pow((yNext - yCurrent), 2);
+            double distance = Math.sqrt((pow1 + pow2));
+            sum += distance;
+            //update the values
+            xCurrent = xNext;
+            yCurrent = yNext;
+        }
+        return sum;
 	}
 	
 	/**
