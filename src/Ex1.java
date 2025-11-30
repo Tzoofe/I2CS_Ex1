@@ -162,7 +162,6 @@ public class Ex1 {
         for (int i = 0; i < len; i++) {
             double v1 = 0;
             double v2 = 0;
-
             if (i < p1.length) {
                 v1 = p1[i];
             }
@@ -171,7 +170,8 @@ public class Ex1 {
             }
             diff[i] = v1 - v2;
         }
-        return root_rec(diff, x1, x2, eps);
+        double newEPS = EPS / 1000000000.0;
+        return root_rec(diff, x1, x2, newEPS);
 
 	}
 	/**
@@ -218,13 +218,25 @@ public class Ex1 {
 	 * @param numberOfTrapezoid - a natural number representing the number of Trapezoids between x1 and x2.
 	 * @return the approximated area between the two polynomial functions within the [x1,x2] range.
 	 */
-	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
-		double ans = 0;
-        /** add you code below
+    public static double area(double[] p1, double[] p2, double x1, double x2, int numberOfTrapezoid) {
+        int n = 100;
+        int nEffective = Math.max(numberOfTrapezoid, n);
 
-         /////////////////// */
-		return ans;
-	}
+        double sum = 0;
+        double dx = (x2 - x1) / n;
+
+        for (int i = 0; i < n; i++) {
+            double currentX = x1 + i * dx;
+            double nextX = currentX + dx;
+
+            double currentY = Math.abs(f(p1, currentX) - f(p2, currentX));
+            double nextY = Math.abs(f(p1, nextX) - f(p2, nextX));
+
+            sum += ((currentY + nextY) / 2) * dx;
+        }
+
+        return sum;
+    }
 	/**
 	 * This function computes the array representation of a polynomial function from a String
 	 * representation. Note:given a polynomial function represented as a double array,
@@ -233,26 +245,77 @@ public class Ex1 {
 	 * @param p - a String representing polynomial function.
 	 * @return
 	 */
-	public static double[] getPolynomFromString(String p) {
-		double [] ans = ZERO;//  -1.0x^2 +3.0x +2.0
-        /** add you code below
+    public static double[] getPolynomFromString(String p) {
+        String p2 = p.replace(" ", "").replace("-", "+-");
+        if (p2.startsWith("+")) {
+            p2 = p2.substring(1);
+        }
 
-         /////////////////// */
-		return ans;
-	}
+        String[] terms = p2.split("\\+");
+
+        int maxDegree = 0;
+        for (int i = 0; i < terms.length; i++) {
+            String t = terms[i];
+            int currentDegree = 0;
+            int xInd = t.indexOf('x');
+
+            if (xInd == -1) {
+                currentDegree = 0;
+            } else if (!t.contains("^")) {
+                currentDegree = 1;
+            } else {
+                currentDegree = Integer.parseInt(t.substring(t.indexOf('^') + 1));
+            }
+
+            if (currentDegree > maxDegree) {
+                maxDegree = currentDegree;
+            }
+        }
+
+        double[] ans = new double[maxDegree + 1];
+
+        for (int i = 0; i < terms.length; i++) {
+            String t = terms[i];
+            int degree = 0;
+            double coeff = 0;
+            int xInd = t.indexOf('x');
+
+            if (xInd == -1) degree = 0;
+            else if (!t.contains("^")) degree = 1;
+            else degree = Integer.parseInt(t.substring(t.indexOf('^') + 1));
+
+            if (xInd == -1) {
+                coeff = Double.parseDouble(t);
+            } else {
+                String prefix = t.substring(0, xInd);
+                if (prefix.isEmpty() || prefix.equals("+")) coeff = 1;
+                else if (prefix.equals("-")) coeff = -1;
+                else coeff = Double.parseDouble(prefix);
+            }
+
+            ans[degree] += coeff;
+        }
+
+        return ans;
+    }
+
 	/**
 	 * This function computes the polynomial function which is the sum of two polynomial functions (p1,p2)
 	 * @param p1
 	 * @param p2
 	 * @return
 	 */
-	public static double[] add(double[] p1, double[] p2) {
-		double [] ans = ZERO;//
-        /** add you code below
+    public static double[] add(double[] p1, double[] p2) {
+        int len = Math.max(p1.length, p2.length);
+        double[] ans = new double[len];
+        for (int i = 0; i < len; i++) {
+            double v1 = (i < p1.length) ? p1[i] : 0;
+            double v2 = (i < p2.length) ? p2[i] : 0;
+            ans[i] = v1 + v2;
+        }
 
-         /////////////////// */
-		return ans;
-	}
+        return ans;
+    }
 	/**
 	 * This function computes the polynomial function which is the multiplication of two polynoms (p1,p2)
 	 * @param p1
