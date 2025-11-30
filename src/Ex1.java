@@ -121,11 +121,27 @@ public class Ex1 {
 	public static String poly(double[] poly) {
 		String ans = "";
 		if(poly.length==0) {ans="0";}
-		else {
-            /** add you code below
+        for (int i = poly.length -1; i >= 0 ; i--) {
+            double val = poly[i];
+            if (val == 0) {
+                continue;
+            }
+            if (val > 0 && !ans.isEmpty()) {
+                ans += "+";
+            }
+            ans += val;
 
-             /////////////////// */
-		}
+            if (i == 1) {
+                ans += "x";
+            }else if (i > 1) {
+                ans += "x^" + i;
+            }
+        }
+        //check if no string was provided
+        if(ans.length() == 0) {
+            return "0";
+        }
+
 		return ans;
 	}
 	/**

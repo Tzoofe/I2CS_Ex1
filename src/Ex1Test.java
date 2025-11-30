@@ -21,7 +21,7 @@ class Ex1Test {
 	static double[] po4 = {-3, 0.61, 0.2};
 	
  	@Test
-	public void testPoly() {
+	public void testPolyFromPoints() {
 
          //as per function y = 2x +1
          double [] x1 = {0, 1};
@@ -45,7 +45,7 @@ class Ex1Test {
 
      }
      @Test
-     public void testPolyInvalid() {
+     public void testPolyFromPointsInvalid() {
          double [] x = {0, 1};
          double [] y = {1}; //missing point
          double [] res = Ex1.PolynomFromPoints(x, y);
@@ -59,10 +59,35 @@ class Ex1Test {
 		assertEquals(fx1, 4, Ex1.EPS);
 		assertEquals(fx2, 6, Ex1.EPS);
 	}
+
+    //test the poly function
+    @Test
+    void testPoly() {
+         double[] p1 = {2, 0, 3.1, -1.2};
+         String expectedAns = "-1.2x^3+3.1x^2+2.0";
+         assertEquals(expectedAns, Ex1.poly(p1));
+
+         //check for 0;
+        double[] p2 = {0, 0, 0};
+        assertEquals("0", Ex1.poly(p2)); // can skip the string part - less lines
+
+        //check if no poly was provided
+        double[] p3 = {};
+        assertEquals("0", Ex1.poly(p3));
+
+        //try skipping if the number is 0 and is needed a hezka
+        //remember is runs from the last digit to the start
+        //expected outcome is "2x^3 + 3x + 5"
+        double[] p4 = {5, 3, 0 ,2};
+        String expectedAns4 = "2.0x^3+3.0x+5.0";
+        assertEquals(expectedAns4, Ex1.poly(p4));
+
+    }
 	@Test
 	/**
 	 * Tests that p1(x) + p2(x) == (p1+p2)(x)
 	 */
+
 	void testF2() {
 		double x = Math.PI;
 		double[] po12 = Ex1.add(po1, po2);
