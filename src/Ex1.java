@@ -8,6 +8,7 @@
  * This is the main Class you should implement (see "add your code below")
  *
  * @author boaz.benmoshe
+ *
 
  */
 public class Ex1 {
@@ -108,8 +109,7 @@ public class Ex1 {
                 return false;
             }
         }
-        boolean ans = true;
-		return ans;
+        return true;
 	}
 
 	/** 
@@ -138,7 +138,7 @@ public class Ex1 {
             }
         }
         //check if no string was provided
-        if(ans.length() == 0) {
+        if(ans.isEmpty()) {
             return "0";
         }
 
@@ -218,6 +218,10 @@ public class Ex1 {
 	 * @param numberOfTrapezoid - a natural number representing the number of Trapezoids between x1 and x2.
 	 * @return the approximated area between the two polynomial functions within the [x1,x2] range.
 	 */
+
+
+    /// Function works as intended-ish - couldnt get testArea3 to work as intended and as a result - the numbers arent
+    /// matching to the 0.0000 points
     public static double area(double[] p1, double[] p2, double x1, double x2, int numberOfTrapezoid) {
         int n = 100;
         int nEffective = Math.max(numberOfTrapezoid, n);
@@ -237,6 +241,9 @@ public class Ex1 {
 
         return sum;
     }
+
+
+
 	/**
 	 * This function computes the array representation of a polynomial function from a String
 	 * representation. Note:given a polynomial function represented as a double array,
@@ -245,6 +252,11 @@ public class Ex1 {
 	 * @param p - a String representing polynomial function.
 	 * @return
 	 */
+
+
+///     Got outside assistance understanding what and how to build this function, mostly due to lack of knowledge in
+///     some mathematic functions.
+///     @MayShteiman - github @stressedmuffin
     public static double[] getPolynomFromString(String p) {
         String p2 = p.replace(" ", "").replace("-", "+-");
         if (p2.startsWith("+")) {
@@ -257,11 +269,7 @@ public class Ex1 {
         for (int i = 0; i < terms.length; i++) {
             String t = terms[i];
             int currentDegree = 0;
-            int xInd = t.indexOf('x');
-
-            if (xInd == -1) {
-                currentDegree = 0;
-            } else if (!t.contains("^")) {
+            if (!t.contains("^")) {
                 currentDegree = 1;
             } else {
                 currentDegree = Integer.parseInt(t.substring(t.indexOf('^') + 1));
@@ -279,9 +287,7 @@ public class Ex1 {
             int degree = 0;
             double coeff = 0;
             int xInd = t.indexOf('x');
-
-            if (xInd == -1) degree = 0;
-            else if (!t.contains("^")) degree = 1;
+            if (!t.contains("^")) degree = 1;
             else degree = Integer.parseInt(t.substring(t.indexOf('^') + 1));
 
             if (xInd == -1) {
@@ -322,23 +328,35 @@ public class Ex1 {
 	 * @param p2
 	 * @return
 	 */
-	public static double[] mul(double[] p1, double[] p2) {
-		double [] ans = ZERO;//
-        /** add you code below
+    public static double[] mul(double[] p1, double[] p2) {
+        int len1 = p1.length;
+        int len2 = p2.length;
+        if (len1 == 0 || len2 == 0) return new double[] {0};
+        double[] ans = new double[len1 + len2 - 1];
 
-         /////////////////// */
-		return ans;
-	}
+        for (int i = 0; i < len1; i++) {
+            for (int j = 0; j < len2; j++) {
+                double val = p1[i] * p2[j];
+                ans[i + j] += val;
+            }
+        }
+
+        return ans;
+    }
 	/**
 	 * This function computes the derivative of the p0 polynomial function.
 	 * @param po
 	 * @return
 	 */
-	public static double[] derivative (double[] po) {
-		double [] ans = ZERO;//
-        /** add you code below
+    public static double[] derivative(double[] po) {
+        if (po.length <= 1) {
+            return new double[]{0};
+        }
+        double[] ans = new double[po.length - 1];
+        for (int i = 1; i < po.length; i++) {
+            ans[i - 1] = po[i] * i;
+        }
 
-         /////////////////// */
-		return ans;
-	}
+        return ans;
+    }
 }
